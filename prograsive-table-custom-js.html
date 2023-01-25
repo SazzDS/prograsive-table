@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .tableFixHead          { overflow: auto; height: 350px; }
+      .tableFixHead thead { position: sticky; top: 0; z-index: 1; }
+      /* Just common table stuff. Really. */
+      table  { border-collapse: collapse; width: 100%; }
+      th, td { padding: 8px 16px; }
+      th     { background:#eee; }
+
+      
+      .loader-line {
+        padding: 0 !important;
+        width: 100%;
+        height: 3px;
+        position: relative;
+        overflow: hidden;
+        background-color: #ddd;
+        margin: 100px auto;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+      }
+
+      .loader-line:before {
+        content: "";
+        position: absolute;
+        left: -50%;
+        height: 3px;
+        width: 40%;
+        background-color: coral;
+        -webkit-animation: lineAnim 1s linear infinite;
+        -moz-animation: lineAnim 1s linear infinite;
+        animation: lineAnim 1s linear infinite;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+      }
+
+      @keyframes lineAnim {
+        0% {
+            left: -40%;
+        }
+        50% {
+            left: 20%;
+            width: 80%;
+        }
+        100% {
+            left: 100%;
+            width: 100%;
+        }
+      }
+    </style>
+    <script>
+      const progressiveLimit = 10;
+      const data = [{
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1111111111',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-2222222222',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-3333333333',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-4444444444',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-5555555555',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-6666666666',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-7777777777',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-8888888888',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-9999999999',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1010101010',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-0101010101',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-1212121212',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1313131313',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-1414141414',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-1515151515',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1616161616',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-1717171717',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1111111111',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-2222222222',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-3333333333',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-4444444444',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-5555555555',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-6666666666',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-7777777777',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-8888888888',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-9999999999',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1010101010',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-0101010101',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-1212121212',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1313131313',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-1414141414',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-1515151515',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1616161616',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-1717171717',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1111111111',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-2222222222',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-3333333333',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-4444444444',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-5555555555',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-6666666666',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-7777777777',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-8888888888',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-9999999999',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1010101010',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-0101010101',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-1212121212',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1313131313',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-1414141414',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-1515151515',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1616161616',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-1717171717',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1111111111',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-2222222222',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-3333333333',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-4444444444',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-5555555555',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-6666666666',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-7777777777',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-8888888888',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-9999999999',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1010101010',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-0101010101',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-1212121212',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1313131313',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-1414141414',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-1515151515',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1616161616',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-1717171717',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1111111111',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-2222222222',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-3333333333',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-4444444444',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-5555555555',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-6666666666',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-7777777777',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-8888888888',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-9999999999',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1010101010',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-0101010101',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-1212121212',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1313131313',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-1414141414',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-1515151515',
+      }, {
+          'name' : 'Sandip Kundu',
+          'email' : 'sandip9563165874@gmail.com',
+          'contact' : '+91-1616161616',
+      }, {
+          'name' : 'Amit Karmakar',
+          'email' : 'amit@zeetapro.com',
+          'contact' : '+91-1717171717',
+      }, {
+          'name' : 'Jhilom Halder',
+          'email' : 'jhilom@zeetapro.com',
+          'contact' : '+91-1818181818',
+      }];
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="w100px">
+      <input type="text" placeholder="Search Here" class="form-control" onkeyup="fetchTable(progressiveLimit, $(this).val(), data)">
+    </div>
+    <div class="tableFixHead">
+      <table>
+        <thead>
+          <tr id="loading"><th class="loader-line" colspan="3"></th></tr>
+          <tr id="tcols"><th>TH 1</th><th>TH 2</th><th>TH 3</th></tr>
+        </thead>
+        <tbody id="test">
+        </tbody>
+      </table>
+    </div>
+    <script>
+      function fetchTable(tempprogressiveLimit = 10, filterStr='', data) {
+        $("#loading").show();
+        let tempHTML = '';
+        $.each(data, (i, rec) => {
+          flag = 0;
+          if(tempprogressiveLimit > i) {
+            $.each(rec, (j, val) => {
+              if(val.includes(filterStr))
+                flag = 1;
+            });
+            if ((filterStr == '') || (filterStr != '' && flag == 1))
+              tempHTML += '<tr><td>'+rec.name+'</td><td>'+rec.email+'</td><td>'+rec.contact+'</td></tr>'
+          }
+        });
+        setTimeout(() => {
+          $("#loading").hide();
+          $("#test").html(tempHTML);
+        }, 2000);
+      }
+      fetchTable(progressiveLimit, '', data);
+      // function atBottom(ele) {
+      //     var sh = ele.scrollHeight;
+      //     var st = ele.scrollTop;
+      //     var ht = ele.offsetHeight;
+      //     if(ht==0) {
+      //         return true;
+      //     }
+      //     if(st == sh - ht)
+      //         {return true;} 
+      //     else 
+      //         {return false;}
+      // }
+      tempprogressiveLimit = progressiveLimit;
+      $('.tableFixHead').scroll(function(){
+        //scrollTop refers to the top of the scroll position, which will be scrollHeight - offsetHeight
+        
+        if(this.scrollTop == (this.scrollHeight - this.offsetHeight)) {
+          $("#loading").show();
+          tempprogressiveLimit += 10;
+          if(data.length < tempprogressiveLimit)
+            tempprogressiveLimit = data.length;
+          fetchTable(tempprogressiveLimit, '', data);
+        }
+      });
+
+      // var table = $('.tableFixHead table');
+      // $('.sortable th')
+      //     .wrapInner('<span title="sort this column"/>')
+      //     .each(function(){
+
+      //         var th = $(this),
+      //             thIndex = th.index(),
+      //             inverse = false;
+
+      //         th.click(function(){
+
+      //             console.log('test');
+      //             table.find('td').filter(function(){
+
+      //                 return $(this).index() === thIndex;
+
+      //             }).sortElements(function(a, b){
+
+      //                 if( $.text([a]) == $.text([b]) )
+      //                     return 0;
+
+      //                 return $.text([a]) > $.text([b]) ?
+      //                     inverse ? -1 : 1
+      //                     : inverse ? 1 : -1;
+
+      //             }, function(){
+
+      //                 // parentNode is the element we want to move
+      //                 return this.parentNode; 
+
+      //             });
+
+      //             inverse = !inverse;
+
+      //         });
+
+      //     });
+
+        var g = $(".tableFixHead>table>thead>tr#tcols");
+        console.log(g[0].children);
+        for (var i = 0, len = g[0].children.length; i < len; i++)
+        {
+
+            (function(index){
+                g[0].children[i].onclick = function(){
+                      // alert(index)  ;
+                      sortTable(index)
+                }    
+            })(i);
+
+        }
+
+          function sortTable(pos=0) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.querySelector(".tableFixHead table");
+            switching = true;
+            /*Make a loop that will continue until
+            no switching has been done:*/
+            while (switching) {
+              //start by saying: no switching is done:
+              switching = false;
+              rows = table.rows;
+              /*Loop through all table rows (except the
+              first, which contains table headers):*/
+              for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[pos];
+                y = rows[i + 1].getElementsByTagName("TD")[pos];
+                // console.log(x, y)
+                //check if the two rows should switch place:
+                if(x != undefined)
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                  //if so, mark as a switch and break the loop:
+                  shouldSwitch = true;
+                  break;
+                }
+              }
+              if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+              }
+            }
+          }
+    </script>
+  </body>
+</html>
